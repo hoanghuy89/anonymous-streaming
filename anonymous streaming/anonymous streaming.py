@@ -32,14 +32,14 @@ def doRecognizePerson(faceNames, fid):
 
 def detectAndTrackMultipleFaces():
     #Open the first webcame device
-    capture = cv2.VideoCapture(0)
+    capture = cv2.VideoCapture(1)
 
     #Create two opencv named windows
-    cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)
+    #cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
 
     #Position the windows next to eachother
-    cv2.moveWindow("base-image",0,100)
+    #cv2.moveWindow("base-image",0,100)
     cv2.moveWindow("result-image",400,100)
 
     #Start the window thread for the two windows we are using
@@ -62,14 +62,13 @@ def detectAndTrackMultipleFaces():
             rc,fullSizeBaseImage = capture.read()
 
             #Resize the image to 320x240
-            baseImage = cv2.resize( fullSizeBaseImage, ( 320, 240))
+            baseImage = cv2.resize( fullSizeBaseImage, (640, 480))
 
             #Check if a key was pressed and if it was Q, then break
             #from the infinite loop
             pressedKey = cv2.waitKey(2)
-            if pressedKey == ord('Q'):
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
 
 
             #Result image is the image we will show the user, which is a
@@ -105,7 +104,7 @@ def detectAndTrackMultipleFaces():
 
                 #If the tracking quality is good enough, we must delete
                 #this tracker
-                if trackingQuality < 7:
+                if trackingQuality < 4:
                     fidsToDelete.append( fid )
 
             for fid in fidsToDelete:
@@ -223,21 +222,30 @@ def detectAndTrackMultipleFaces():
                 t_w = int(tracked_position.width())
                 t_h = int(tracked_position.height())
 
-                cv2.rectangle(resultImage, (t_x, t_y),
-                                        (t_x + t_w , t_y + t_h),
-                                        rectangleColor ,2)
+
+                roi = resultImage[t_y:t_y + t_h, t_x:t_x + t_w]
+
+                blur = cv2.GaussianBlur(roi,(101,101),0)
+
+                resultImage[t_y:t_y + t_h, t_x:t_x + t_w] = blur
+
+                #cv2.rectangle(resultImage, (t_x, t_y),
+                #                        (t_x + t_w , t_y + t_h),
+                #                        rectangleColor ,2)
 
 
-                if fid in faceNames.keys():
-                    cv2.putText(resultImage, faceNames[fid] , 
-                                (int(t_x + t_w/2), int(t_y)), 
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                0.5, (255, 255, 255), 2)
-                else:
-                    cv2.putText(resultImage, "Detecting..." , 
-                                (int(t_x + t_w/2), int(t_y)), 
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                0.5, (255, 255, 255), 2)
+
+
+                # if fid in faceNames.keys():
+                #     cv2.putText(resultImage, faceNames[fid] ,
+                #                 (int(t_x + t_w/2), int(t_y)),
+                #                 cv2.FONT_HERSHEY_SIMPLEX,
+                #                 0.5, (255, 255, 255), 2)
+                # else:
+                #     cv2.putText(resultImage, "Detecting..." ,
+                #                 (int(t_x + t_w/2), int(t_y)),
+                #                 cv2.FONT_HERSHEY_SIMPLEX,
+                #                 0.5, (255, 255, 255), 2)
 
 
 
@@ -255,7 +263,7 @@ def detectAndTrackMultipleFaces():
                                      (OUTPUT_SIZE_WIDTH,OUTPUT_SIZE_HEIGHT))
 
             #Finally, we want to show the images on the screen
-            cv2.imshow("base-image", baseImage)
+            #cv2.imshow("base-image", baseImage)
             cv2.imshow("result-image", largeResult)
 
 

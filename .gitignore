@@ -87,3 +87,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+.idea/camera stream with blur.iml
+.idea/modules.xml
+.idea/workspace.xml
+camera stream with blur.iml
