@@ -1,11 +1,7 @@
-# Face Recognition 
-Repository for face recognition related scripts.
+Anonymous streaming. 
 
-For work I got involved in a project that dealt with face recognition. For this project, we created a robot based on a Lego Mindstorms EV3 unit that can navigate autonomously through a world and which could find persons based on face recogntion.
+Using opencv multiple faces detection and tracking implementation by gdiepen. Add feature to blur faces using gausian blur during record and ability to save video to disk.
 
-In this repository I will publish scripts related to this project.
-
-More details about this project can be found in the following posts on my blog:
-
+More description can be found on gdiepen's blog 
 * [Detecting van tracking a face with python and opencv](https://www.guidodiepen.nl/2017/02/detecting-and-tracking-a-face-with-python-and-opencv/)
 * [Tracking multiple faces](https://www.guidodiepen.nl/2017/02/tracking-multiple-faces/)
